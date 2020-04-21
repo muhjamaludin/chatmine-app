@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "895078212940",
+    "firebase_url": "https://chatmine-3c953.firebaseio.com",
+    "project_id": "chatmine-3c953",
+    "storage_bucket": "chatmine-3c953.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895078212940:android:6ea634ba0a53e414645be9",
+        "android_client_info": {
+          "package_name": "com.chatMine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895078212940-0brgccrjr8o7p5ss8sr3pnmjeqmmbvlq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOnJTLoC_xF5TZ2Q4hmSN_WMRpkyMHI2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895078212940-0brgccrjr8o7p5ss8sr3pnmjeqmmbvlq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895078212940:android:b887b3f6eb7dabb9645be9",
+        "android_client_info": {
+          "package_name": "com.chatmine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895078212940-0brgccrjr8o7p5ss8sr3pnmjeqmmbvlq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOnJTLoC_xF5TZ2Q4hmSN_WMRpkyMHI2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895078212940-0brgccrjr8o7p5ss8sr3pnmjeqmmbvlq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
