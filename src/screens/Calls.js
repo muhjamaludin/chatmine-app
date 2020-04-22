@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   phone: {
     fontSize: 36,
-    color: '#075e5',
+    color: '#075e51',
   },
 });
 
