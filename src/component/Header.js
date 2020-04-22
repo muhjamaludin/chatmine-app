@@ -1,14 +1,15 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet, SafeAreaView} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   header: {
-    height: '9%',
+    height: '29%',
     width: '100%',
     backgroundColor: '#075e54',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    position: 'relative',
   },
   textHeader: {
     color: 'white',
@@ -28,22 +29,28 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HeaderChat() {
-  return (
-    <View style={styles.header}>
-      <View>
+export default class HeaderChat extends React.Component {
+  render() {
+    return (
+      <View style={styles.header}>
         <View>
-          <Text style={styles.textHeader}>ChatMine</Text>
+          <View>
+            <Text style={styles.textHeader}>ChatMine</Text>
+          </View>
+        </View>
+        <View style={styles.iconView}>
+          <View>
+            <Icon name="magnify" style={styles.iconHeader} />
+          </View>
+          <View>
+            <Icon
+              name="account"
+              style={styles.iconHeader}
+              onPress={() => this.props.navigation.navigate('EditProfile')}
+            />
+          </View>
         </View>
       </View>
-      <View style={styles.iconView}>
-        <View>
-          <Icon name="magnify" style={styles.iconHeader} />
-        </View>
-        <View>
-          <Icon name="dots-vertical" style={styles.iconHeader} />
-        </View>
-      </View>
-    </View>
-  );
+    );
+  }
 }
