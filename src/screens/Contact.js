@@ -6,7 +6,7 @@ import HeaderChat from '../component/Header';
 export default function Contact() {
   return (
     <View>
-      <Text>Ini kontak</Text>
+      <Text>Ini maps</Text>
     </View>
   );
 }

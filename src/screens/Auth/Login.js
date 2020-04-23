@@ -5,9 +5,12 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Modal,
-  TouchableHighlight,
+  ToastAndroid,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const styles = StyleSheet.create({
   viewHeader: {
@@ -26,6 +29,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
   },
+  viewInput: {
+    flexDirection: 'row',
+    backgroundColor: 'red',
+    justifyContent: 'center',
+  },
   textMyNumber: {
     color: '#00B0FF',
   },
@@ -42,76 +50,77 @@ const styles = StyleSheet.create({
   modal: {
     width: '80%',
   },
+  iconFont: {
+    fontSize: 18,
+  },
 });
 
-export default function EditProfile({navigation}) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [value, onChangeText] = useState('nomor telepon');
+export default function EditProfile({navigation}, props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmit = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        auth().onAuthStateChanged((userData) => {
+          const id = userData._user.uid;
+          database()
+            .ref(`/UserList/${id}`)
+            .once('value')
+            .then((snapshot) => {
+              navigation.navigate('MyTab', snapshot.val());
+              console.log('User data: ', snapshot.val());
+            });
+        });
+      })
+      .catch((err) => {
+        console.log(err.code);
+        if (err.code === 'auth/wrong-password') {
+          ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
+        }
+      });
+  };
   return (
     <>
       <View style={styles.viewHeader}>
-        <Text style={styles.textHeader}>Masukkan nomor telepon Anda</Text>
-      </View>
-      <View style={styles.viewHeader}>
-        <Text style={styles.textVerif}>
-          ChatMine akan mengirim SMS untuk memverifikasi nomor telepon Anda.{' '}
-          <Text style={styles.textMyNumber}>Berapa nomor saya ?</Text>
-        </Text>
-      </View>
-      <View style={styles.viewHeader}>
-        <Text>Negara</Text>
+        <Text style={styles.textHeader}>Masuk Otentifikasi Anda</Text>
       </View>
       <View style={styles.viewNumber}>
-        <Text>+62</Text>
-        <TextInput
-          onChangeText={(text) => onChangeText('+62 '.concat(text))}
-          placeholder="nomor"
-        />
+        <View>
+          <Icon style={styles.iconFont} name="email" />
+        </View>
+        <View>
+          <TextInput
+            onChangeText={(text) => setEmail(text)}
+            placeholder="email"
+          />
+        </View>
+      </View>
+      <View style={styles.viewNumber}>
+        <View>
+          <Icon name="key" style={styles.iconFont} />
+        </View>
+        <View>
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
+            placeholder="password"
+          />
+        </View>
       </View>
       <View style={styles.viewHeader}>
         <View>
-          <Text style={styles.textOpacity}>
-            Biaya SMS operator mungkin berlaku
-          </Text>
+          <Text style={styles.textOpacity}>Forgot password ?</Text>
         </View>
       </View>
       <View style={styles.viewHeader}>
-        <TouchableHighlight>
-          <Button onPress={() => navigation.navigate('OTP')} title={'LANJUT'} />
-        </TouchableHighlight>
+        <TouchableOpacity>
+          <Button type="outline" onPress={onSubmit} title={'LOGIN'} />
+        </TouchableOpacity>
       </View>
-
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-          <View style={styles.modal}>
-            <View>
-              <Text>Kami akan memverifikasi nomor telepon:</Text>
-            </View>
-            <View>
-              <Text>{value}</Text>
-            </View>
-            <View>
-              <Text>
-                Apakah data ini benar atau Anda ingin mengubah nomor Anda ?
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <Text onPress={() => navigation.goBack()}>EDIT</Text>
-              <Text onPress={() => navigation.navigate('OTP')}>OKE</Text>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <View style={styles.viewHeader}>
+        <Text onPress={() => navigation.navigate('Register')}>Buat Akun</Text>
+      </View>
     </>
   );
 }

@@ -81,6 +81,31 @@ import com.android.build.OutputFile
 project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
+project.ext {
+  set('react-native', [
+    versions: [
+      // Overriding Build/Android SDK Versions
+      android : [
+        minSdk    : 16,
+        targetSdk : 28,
+        compileSdk: 28,
+        buildTools: "28.0.3"
+      ],
+
+      // Overriding Library SDK Versions
+      firebase: [
+        // Override Firebase SDK Version
+        bom           : "21.1.0",
+
+        // Override Crashlytics SDK Version
+        crashlytics   : "2.10.0",
+
+        // Override Crashlytics SDK Version
+        crashlyticsNdk: "2.1.0"
+      ],
+    ],
+  ])
+}
 
 apply from: "../../node_modules/react-native/react.gradle"
 
@@ -135,6 +160,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        
     }
     splits {
         abi {

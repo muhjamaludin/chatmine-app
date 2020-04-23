@@ -1,85 +1,87 @@
-import React from 'react';
-import {Text, View, Button, StyleSheet, Image} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TextInput, Button} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
-const styles = StyleSheet.create({
-  viewButton: {
-    width: '100%',
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  specButton: {
-    width: '60%',
-    borderRadius: 20,
-  },
-  forButton: {
-    borderRadius: 20,
-  },
-  viewCome: {
-    height: '20%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textCome: {
-    fontSize: 24,
-    fontFamily: 'roboto',
-    color: '#00BFA6',
-  },
-  viewIlustration: {
-    width: '100%',
-    height: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  ilustration: {
-    width: '80%',
-    height: '80%',
-  },
-  viewTerm: {
-    height: '10%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textTerm: {
-    fontFamily: 'robot',
-    width: '90%',
-  },
-  blueTerm: {
-    color: '#00B0FF',
-  },
-});
+import {connect} from 'react-redux';
+import {insertNewUser} from '../../redux/actions/AuthActions';
 
-export default function EditProfile({navigation}) {
+function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmit = () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log(email, password);
+        auth().onAuthStateChanged((userData) => {
+          database()
+            .ref('User/' + userData.uid)
+            .set({
+              name: name,
+              status: 'online',
+              phone: phone,
+              email: email,
+              photo:
+                'https://cdn2.iconfinder.com/data/icons/men-women-from-all-over-the-world-1/93/man-woman-people-person-avatar-face-user_49-512.png',
+              uid: userData.uid,
+            })
+            .catch((error) => console.log(error.message));
+        });
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <View>
-        <View style={styles.viewCome}>
-          <Text style={styles.textCome}>Selamat Datang di ChatMine</Text>
-        </View>
-        <View style={styles.viewIlustration}>
-          <Image
-            style={styles.ilustration}
-            source={require('../../files/welcome.png')}
-          />
-        </View>
-        <View style={styles.viewTerm}>
-          <Text style={styles.textTerm}>
-            Baca <Text style={styles.blueTerm}> Kebijakan Privasi </Text> kami.
-            Ketuk "Setuju dan lanjutkan" untuk menerima{' '}
-            <Text style={styles.blueTerm}> Ketentuan Layanan </Text>.
-          </Text>
-        </View>
-        <View style={styles.viewButton}>
-          <View style={styles.specButton}>
-            <Button
-              title={'Setuju dan Lanjutkan'}
-              color="#00BFA6"
-              style={styles.forButton}
-              onPress={() => navigation.navigate('LoginScreen')}
-            />
-          </View>
-        </View>
+        <Text> Register </Text>
+      </View>
+      <View>
+        <Text>Nama</Text>
+        <TextInput onChangeText={(text) => setName(text)} placeholder="nama" />
+      </View>
+      <View>
+        <Text>Email</Text>
+        <TextInput
+          onChangeText={(text) => setEmail(text)}
+          placeholder="email"
+        />
+      </View>
+      <View>
+        <Text>Phone</Text>
+        <TextInput
+          onChangeText={(text) => setPhone(text)}
+          placeholder="phone"
+        />
+      </View>
+      <View>
+        <Text>Password</Text>
+        <TextInput
+          onChangeText={(text) => setPassword(text)}
+          placeholder="password"
+        />
+      </View>
+      <View>
+        <Text>Re-enter Password</Text>
+        <TextInput placeholder="re-renter password" />
+      </View>
+      <View>
+        <Button onPress={onSubmit} title="Buat Akun" />
       </View>
     </>
   );
 }
+
+export default connect(null, {insertNewUser})(Register);

@@ -4,15 +4,16 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import HeaderChat from '../component/Header';
 import Chat from './Chat';
 import Contact from './Contact';
 import Call from './Calls';
+import RoomChat from './RoomChat';
 import EditProfile from './EditProfile';
 import LoginScreen from './Auth/Login';
-import Register from './Auth/Register';
+import Welcome from './Auth/Welcome';
 import ForgotPhone from './Auth/ForgotPhone';
 import Otp from './Auth/Otp';
+import Register from './Auth/Register';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -35,7 +36,7 @@ function MyTabs() {
       }}>
       <Tab.Screen name="CALL" component={Call} />
       <Tab.Screen name="CHAT" component={Chat} />
-      <Tab.Screen name="CONTACT" component={Contact} />
+      <Tab.Screen name="Maps" component={Contact} />
     </Tab.Navigator>
   );
 }
@@ -46,9 +47,9 @@ export default function MainScreen() {
       <Stack.Navigator>
         <>
           <Stack.Screen
-            name="Register"
-            options={{title: 'Register', headerShown: false}}
-            component={Register}
+            name="Welcome"
+            options={{title: 'Welcome', headerShown: false}}
+            component={Welcome}
           />
           <Stack.Screen
             name="EditProfile"
@@ -63,6 +64,11 @@ export default function MainScreen() {
             name="MyTab"
             options={{title: 'MyTab', headerShown: false}}
             component={MyTabs}
+          />
+          <Stack.Screen
+            name="RoomChat"
+            options={{title: 'RoomChat', headerShown: true}}
+            component={RoomChat}
           />
           <Stack.Screen
             name="LoginScreen"
@@ -85,6 +91,11 @@ export default function MainScreen() {
             name="OTP"
             options={{title: 'Succes', headerShown: false}}
             component={Otp}
+          />
+          <Stack.Screen
+            name="Register"
+            options={{title: 'Register', headerShown: false}}
+            component={Register}
           />
         </>
       </Stack.Navigator>

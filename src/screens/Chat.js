@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Chat() {
+export default function Chat({navigation}) {
   return (
     <ScrollView scrollEventThrottle={8}>
       {users.map((item, i) => (
-        <TouchableHighlight>
+        <TouchableHighlight onPress={() => navigation.navigate('RoomChat')}>
           <View key={users[i].id} style={styles.card}>
             <View style={styles.viewPic}>
               <Image style={styles.pic} source={users[i].pic} />
