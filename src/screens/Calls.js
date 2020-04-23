@@ -2,6 +2,9 @@ import React from 'react';
 import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import HeaderChat from '../component/Header';
+import {Header} from 'react-native/Libraries/NewAppScreen';
+
 const users = [
   {
     id: 1,
@@ -143,7 +146,6 @@ const users = [
 
 const styles = StyleSheet.create({
   card: {
-    flex: 1,
     flexDirection: 'row',
   },
   viewPic: {
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
 
 export default function Call() {
   return (
-    <ScrollView scrollEventThrottle={8}>
+    <ScrollView>
       {users.map((item, i) => (
         <View key={users[i].id} style={styles.card}>
           <View style={styles.viewPic}>

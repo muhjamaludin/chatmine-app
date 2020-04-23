@@ -193,6 +193,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-contacts')
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

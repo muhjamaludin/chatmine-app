@@ -1,6 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
+
+import HeaderChat from '../component/Header';
 
 export default function Contact() {
-  return <Text>Ini kontak</Text>;
+  return (
+    <View>
+      <Text>Ini kontak</Text>
+    </View>
+  );
 }

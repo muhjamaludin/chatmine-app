@@ -25,21 +25,18 @@ const styles = StyleSheet.create({
 
 function MyTabs() {
   return (
-    <View>
-      <HeaderChat />
-      <Tab.Navigator
-        style={{}}
-        tabBarOptions={{
-          activeTintColor: 'white',
-          labelStyle: {fontWeight: 'bold'},
-          indicatorStyle: {backgroundColor: 'white'},
-          style: {backgroundColor: '#075e54'},
-        }}>
-        <Tab.Screen name="CALL" component={Call} />
-        <Tab.Screen name="CHAT" component={Chat} />
-        <Tab.Screen name="CONTACT" component={Contact} />
-      </Tab.Navigator>
-    </View>
+    <Tab.Navigator
+      style={{}}
+      tabBarOptions={{
+        activeTintColor: 'white',
+        labelStyle: {fontWeight: 'bold'},
+        indicatorStyle: {backgroundColor: 'white'},
+        style: {backgroundColor: '#075e54'},
+      }}>
+      <Tab.Screen name="CALL" component={Call} />
+      <Tab.Screen name="CHAT" component={Chat} />
+      <Tab.Screen name="CONTACT" component={Contact} />
+    </Tab.Navigator>
   );
 }
 

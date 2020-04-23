@@ -1,6 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableHighlight,
+} from 'react-native';
+
+import HeaderChat from '../component/Header';
 
 const users = [
   {
@@ -143,15 +151,17 @@ export default function Chat() {
   return (
     <ScrollView scrollEventThrottle={8}>
       {users.map((item, i) => (
-        <View key={users[i].id} style={styles.card}>
-          <View style={styles.viewPic}>
-            <Image style={styles.pic} source={users[i].pic} />
+        <TouchableHighlight>
+          <View key={users[i].id} style={styles.card}>
+            <View style={styles.viewPic}>
+              <Image style={styles.pic} source={users[i].pic} />
+            </View>
+            <View style={styles.viewText}>
+              <Text style={styles.boldText}>{users[i].name}</Text>
+              <Text style={styles.opacityText}>{users[i].msg}</Text>
+            </View>
           </View>
-          <View style={styles.viewText}>
-            <Text style={styles.boldText}>{users[i].name}</Text>
-            <Text style={styles.opacityText}>{users[i].msg}</Text>
-          </View>
-        </View>
+        </TouchableHighlight>
       ))}
     </ScrollView>
   );

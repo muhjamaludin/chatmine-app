@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#075e54',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'relative',
   },
   textHeader: {
     color: 'white',
@@ -29,28 +28,26 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class HeaderChat extends React.Component {
-  render() {
-    return (
-      <View style={styles.header}>
+export default function HeaderChat({navigation}) {
+  return (
+    <View style={styles.header}>
+      <View>
         <View>
-          <View>
-            <Text style={styles.textHeader}>ChatMine</Text>
-          </View>
-        </View>
-        <View style={styles.iconView}>
-          <View>
-            <Icon name="magnify" style={styles.iconHeader} />
-          </View>
-          <View>
-            <Icon
-              name="account"
-              style={styles.iconHeader}
-              onPress={() => this.props.navigation.navigate('EditProfile')}
-            />
-          </View>
+          <Text style={styles.textHeader}>ChatMine</Text>
         </View>
       </View>
-    );
-  }
+      <View style={styles.iconView}>
+        <View>
+          <Icon name="magnify" style={styles.iconHeader} />
+        </View>
+        <View>
+          <Icon
+            name="account"
+            style={styles.iconHeader}
+            onPress={() => navigation.navigate('EditProfile')}
+          />
+        </View>
+      </View>
+    </View>
+  );
 }

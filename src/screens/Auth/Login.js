@@ -1,5 +1,13 @@
-import React from 'react';
-import {Text, View, TextInput, Button, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Modal,
+  TouchableHighlight,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   viewHeader: {
@@ -31,9 +39,14 @@ const styles = StyleSheet.create({
   textOpacity: {
     opacity: 0.5,
   },
+  modal: {
+    width: '80%',
+  },
 });
 
 export default function EditProfile({navigation}) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [value, onChangeText] = useState('nomor telepon');
   return (
     <>
       <View style={styles.viewHeader}>
@@ -50,7 +63,10 @@ export default function EditProfile({navigation}) {
       </View>
       <View style={styles.viewNumber}>
         <Text>+62</Text>
-        <TextInput placeholder={'nomor telepon'} />
+        <TextInput
+          onChangeText={(text) => onChangeText('+62 '.concat(text))}
+          placeholder="nomor"
+        />
       </View>
       <View style={styles.viewHeader}>
         <View>
@@ -60,8 +76,42 @@ export default function EditProfile({navigation}) {
         </View>
       </View>
       <View style={styles.viewHeader}>
-        <Button onPress={() => navigation.navigate('MyTab')} title={'LANJUT'} />
+        <TouchableHighlight>
+          <Button onPress={() => navigation.navigate('OTP')} title={'LANJUT'} />
+        </TouchableHighlight>
       </View>
+
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+          }}>
+          <View style={styles.modal}>
+            <View>
+              <Text>Kami akan memverifikasi nomor telepon:</Text>
+            </View>
+            <View>
+              <Text>{value}</Text>
+            </View>
+            <View>
+              <Text>
+                Apakah data ini benar atau Anda ingin mengubah nomor Anda ?
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <Text onPress={() => navigation.goBack()}>EDIT</Text>
+              <Text onPress={() => navigation.navigate('OTP')}>OKE</Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
