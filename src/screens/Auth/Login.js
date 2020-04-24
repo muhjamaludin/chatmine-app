@@ -11,6 +11,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import {setLogin} from '../../redux/actions/AuthActions';
+import {connect} from 'react-redux';
 
 const styles = StyleSheet.create({
   viewHeader: {
@@ -55,31 +57,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function EditProfile({navigation}, props) {
+function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onSubmit = () => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        auth().onAuthStateChanged((userData) => {
-          const id = userData._user.uid;
-          database()
-            .ref(`/UserList/${id}`)
-            .once('value')
-            .then((snapshot) => {
-              navigation.navigate('MyTab', snapshot.val());
-              console.log('User data: ', snapshot.val());
-            });
-        });
-      })
-      .catch((err) => {
-        console.log(err.code);
-        if (err.code === 'auth/wrong-password') {
-          ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
-        }
-      });
+    props.setLogin(email, password, (success) => {
+      props.navigation.navigate('MyTab');
+    });
   };
   return (
     <>
@@ -124,3 +109,5 @@ export default function EditProfile({navigation}, props) {
     </>
   );
 }
+
+export default connect(null, {setLogin})(Login);

@@ -1,34 +1,45 @@
 import React from 'react';
 import {View, StyleSheet, Keyboard, Button, TextInput} from 'react-native';
+import {GiftedChat} from 'react-native-gifted-chat';
+import {firebase} from '@react-native-firebase/auth';
 
 export default class RoomChat extends React.Component {
-  constructor(props) {
-    super(props);
-    this.submit = this.submit.bind(this);
-  }
   state = {
-    text: '',
+    messages: [],
   };
-  submit() {
-    this.props.submit(this.state.text);
+
+  componentDidMount() {
     this.setState({
-      text: '',
+      messages: [
+        {
+          _id: 1,
+          text: 'Hello developer',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar:
+              'https://cdn.iconscout.com/icon/free/png-256/account-profile-avatar-man-circle-round-user-30452.png',
+          },
+        },
+      ],
     });
-    Keyboard.dismiss();
+  }
+
+  onSend(messages = []) {
+    this.setState((previousState) => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }));
   }
   render() {
     return (
-      <View style={styles.compose}>
-        <TextInput
-          style={styles.composeText}
-          value={this.state.text}
-          onChangeText={(text) => this.setState({text})}
-          onSubmitEditing={(event) => this.submit()}
-          editable={true}
-          maxLength={40}
-        />
-        <Button onPress={this.submit} title="Send" />
-      </View>
+      <GiftedChat
+        messages={this.state.messages}
+        onSend={(messages) => this.onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
     );
   }
 }

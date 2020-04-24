@@ -15,7 +15,7 @@ const users = [
     id: 1,
     pic: require('../files/dian_sastro.jpg'),
     name: 'Dian Sastrowardoyo',
-    msg: 'Sayang',
+    msg: 'Jangan lupa',
   },
   {
     id: 2,

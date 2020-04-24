@@ -1,9 +1,11 @@
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+import {ToastAndroid} from 'react-native';
 
-export const getOneData = () => async (dispatch) => {
+export const getOneData = (id) => async (dispatch) => {
   try {
     const data = await database()
-      .ref('UsersList/-M5VglMpoECkkBq9J8v6')
+      .ref('User/-M5VglMpoECkkBq9J8v6')
       .once('value')
       .then((snapshot) => {
         console.log('User data: ', snapshot.val());
@@ -15,6 +17,34 @@ export const getOneData = () => async (dispatch) => {
   } catch (errror) {
     console.log(errror);
   }
+};
+
+export const setLogin = (email, password, callback) => async (dispatch) => {
+  auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(() => {
+      console.log(email, password);
+      auth().onAuthStateChanged((userData) => {
+        const id = userData._user.uid;
+        database()
+          .ref(`/User/${id}`)
+          .once('value')
+          .then((snapshot) => {
+            console.log('User data: ', snapshot.val());
+          });
+        callback(true);
+        dispatch({
+          type: 'SET_LOGIN',
+          payload: userData._user,
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err.code);
+      if (err.code === 'auth/wrong-password') {
+        ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
+      }
+    });
 };
 
 export const insertNewUser = (data) => async (dispatch) => {
