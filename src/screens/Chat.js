@@ -7,6 +7,8 @@ import {
   Image,
   TouchableHighlight,
 } from 'react-native';
+import {getAllData} from '../redux/actions/AuthActions';
+import {connect} from 'react-redux';
 
 import HeaderChat from '../component/Header';
 
@@ -147,11 +149,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Chat({navigation}) {
+function Chat(props) {
+  const data = () => {
+    props.getAllData();
+  };
   return (
     <ScrollView scrollEventThrottle={8}>
       {users.map((item, i) => (
-        <TouchableHighlight onPress={() => navigation.navigate('RoomChat')}>
+        <TouchableHighlight
+          onPress={() => props.navigation.navigate('RoomChat')}>
           <View key={users[i].id} style={styles.card}>
             <View style={styles.viewPic}>
               <Image style={styles.pic} source={users[i].pic} />
@@ -166,3 +172,13 @@ export default function Chat({navigation}) {
     </ScrollView>
   );
 }
+
+const MapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+const MapDispatchToProps = {getAllData};
+
+export default connect(MapStateToProps, MapDispatchToProps)(Chat);

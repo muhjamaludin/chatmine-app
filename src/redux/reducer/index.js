@@ -13,4 +13,4 @@ const rootReducer = (state, action) => {
   return appReducer;
 };
 
-export default rootReducer;
+export default appReducer;

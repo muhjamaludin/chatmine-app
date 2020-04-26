@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Keyboard, Button, TextInput} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {firebase} from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default class RoomChat extends React.Component {
   state = {

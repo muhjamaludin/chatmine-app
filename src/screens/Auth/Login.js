@@ -1,16 +1,7 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  ToastAndroid,
-} from 'react-native';
+import {Text, View, TextInput, Button, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
 import {setLogin} from '../../redux/actions/AuthActions';
 import {connect} from 'react-redux';
 
@@ -62,9 +53,7 @@ function Login(props) {
   const [password, setPassword] = useState('');
 
   const onSubmit = () => {
-    props.setLogin(email, password, (success) => {
-      props.navigation.navigate('MyTab');
-    });
+    props.setLogin(email, password, (success) => {});
   };
   return (
     <>
@@ -95,7 +84,11 @@ function Login(props) {
       </View>
       <View style={styles.viewHeader}>
         <View>
-          <Text style={styles.textOpacity}>Forgot password ?</Text>
+          <Text
+            onPress={() => props.navigation.navigate('ForgotPassword')}
+            style={styles.textOpacity}>
+            Forgot password ?
+          </Text>
         </View>
       </View>
       <View style={styles.viewHeader}>
@@ -104,7 +97,9 @@ function Login(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.viewHeader}>
-        <Text onPress={() => navigation.navigate('Register')}>Buat Akun</Text>
+        <Text onPress={() => props.navigation.navigate('Register')}>
+          Buat Akun
+        </Text>
       </View>
     </>
   );

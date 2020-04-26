@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import {connect} from 'react-redux';
 
 import Chat from './Chat';
 import Contact from './Contact';
@@ -11,9 +12,9 @@ import RoomChat from './RoomChat';
 import EditProfile from './EditProfile';
 import LoginScreen from './Auth/Login';
 import Welcome from './Auth/Welcome';
-import ForgotPhone from './Auth/ForgotPhone';
 import Otp from './Auth/Otp';
 import Register from './Auth/Register';
+import ForgotPassword from './Auth/ForgotPhone';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -34,71 +35,80 @@ function MyTabs() {
         indicatorStyle: {backgroundColor: 'white'},
         style: {backgroundColor: '#075e54'},
       }}>
-      <Tab.Screen name="CALL" component={Call} />
+      <Tab.Screen name="PROFILE" component={Call} />
       <Tab.Screen name="CHAT" component={Chat} />
       <Tab.Screen name="Maps" component={Contact} />
     </Tab.Navigator>
   );
 }
 
-export default function MainScreen() {
+function MainScreen(props) {
+  // useEffect(() => {
+  //   props.getOneData();
+  // }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <>
-          <Stack.Screen
-            name="Welcome"
-            options={{title: 'Welcome', headerShown: false}}
-            component={Welcome}
-          />
-          <Stack.Screen
-            name="EditProfile"
-            options={{
-              title: 'Profile',
-              headerShown: true,
-              backgroundColor: '#075e54',
-            }}
-            component={EditProfile}
-          />
-          <Stack.Screen
-            name="MyTab"
-            options={{title: 'MyTab', headerShown: false}}
-            component={MyTabs}
-          />
-          <Stack.Screen
-            name="RoomChat"
-            options={{title: 'RoomChat', headerShown: true}}
-            component={RoomChat}
-          />
-          <Stack.Screen
-            name="LoginScreen"
-            options={{
-              title: 'Login',
-              headerShown: false,
-            }}
-            component={LoginScreen}
-          />
-          <Stack.Screen
-            name="ForgotPhone"
-            options={{
-              title: 'Forgot Password',
-              headerShown: false,
-            }}
-            component={ForgotPhone}
-          />
+        {props.authData && props.authData.isLogin ? (
+          <>
+            <Stack.Screen
+              name="MyTab"
+              options={{title: 'MyTab', headerShown: false}}
+              component={MyTabs}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Welcome"
+              options={{title: 'Welcome', headerShown: false}}
+              component={Welcome}
+            />
+            <Stack.Screen
+              name="Register"
+              options={{title: 'Register', headerShown: false}}
+              component={Register}
+            />
+          </>
+        )}
+        <Stack.Screen
+          name="ForgotPassword"
+          options={{title: 'Forgot Password', headerShown: true}}
+          component={ForgotPassword}
+        />
+        <Stack.Screen
+          name="OTP"
+          options={{title: 'Succes', headerShown: false}}
+          component={Otp}
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          options={{title: 'Login', headerShown: false}}
+          component={LoginScreen}
+        />
 
-          <Stack.Screen
-            name="OTP"
-            options={{title: 'Succes', headerShown: false}}
-            component={Otp}
-          />
-          <Stack.Screen
-            name="Register"
-            options={{title: 'Register', headerShown: false}}
-            component={Register}
-          />
-        </>
+        <Stack.Screen
+          name="EditProfile"
+          options={{
+            title: 'Profile',
+            headerShown: true,
+            backgroundColor: '#075e54',
+          }}
+          component={EditProfile}
+        />
+        <Stack.Screen
+          name="RoomChat"
+          options={{title: 'RoomChat', headerShown: true}}
+          component={RoomChat}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const MapStateToProps = (state) => {
+  console.log('status login', state.auth.isLogin);
+  return {authData: state.auth};
+};
+
+export default connect(MapStateToProps, null)(MainScreen);
