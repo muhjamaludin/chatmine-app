@@ -66,6 +66,40 @@ export const setLogin = (email, password, callback) => async (dispatch) => {
     });
 };
 
+export const register = (email, password, name, phone, callback) => async (
+  dispatch,
+) => {
+  auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      console.log(email, password);
+      auth().onAuthStateChanged((userData) => {
+        database()
+          .ref('User/' + userData.uid)
+          .set({
+            name: name,
+            status: 'online',
+            phone: phone,
+            email: email,
+            photo:
+              'https://cdn2.iconfinder.com/data/icons/men-women-from-all-over-the-world-1/93/man-woman-people-person-avatar-face-user_49-512.png',
+            uid: userData.uid,
+          })
+          .catch((error) => console.log(error.message));
+      });
+      callback(true);
+    })
+    .catch((error) => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+      console.log(error);
+    });
+};
+
 export const setLogout = () => async (dispatch) => {
   console.log('Wadaw');
   auth()
