@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
-import {Text, View, TextInput, Button, StyleSheet} from 'react-native';
+import {Text, View, Button, StyleSheet, TextInput} from 'react-native';
+import {Input} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {setLogin} from '../../redux/actions/AuthActions';
 import {connect} from 'react-redux';
+
+import {AllStyles} from '../../styles/Styles';
 
 const styles = StyleSheet.create({
   viewHeader: {
@@ -13,8 +16,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textHeader: {
-    fontSize: 20,
-    color: '#00BF2E',
+    fontSize: 26,
+    color: '#000',
     fontFamily: 'serif',
   },
   textVerif: {
@@ -35,7 +38,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '10%',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   textOpacity: {
     opacity: 0.5,
@@ -43,14 +45,43 @@ const styles = StyleSheet.create({
   modal: {
     width: '80%',
   },
+  viewFont: {
+    width: '35%',
+    alignItems: 'flex-end',
+  },
   iconFont: {
     fontSize: 18,
+  },
+  textFont: {
+    marginLeft: 10,
+  },
+  viewButton: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  specButton: {
+    width: '80%',
+    alignItems: 'center',
   },
 });
 
 function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError] = useState(null);
+
+  const checkemail = () => {
+    console.log('check email');
+    const req = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (!req.test(email)) {
+      setEmail({emailError: 'Email anda salah'});
+    } else {
+      setPassword({emailError: null});
+    }
+  };
 
   const onSubmit = () => {
     props.setLogin(email, password, (success) => {});
@@ -58,24 +89,27 @@ function Login(props) {
   return (
     <>
       <View style={styles.viewHeader}>
-        <Text style={styles.textHeader}>Masuk Otentifikasi Anda</Text>
+        <Text style={styles.textHeader}>Sign In</Text>
       </View>
       <View style={styles.viewNumber}>
-        <View>
+        <View style={styles.viewFont}>
           <Icon style={styles.iconFont} name="email" />
         </View>
-        <View>
+        <View style={styles.textFont}>
           <TextInput
             onChangeText={(text) => setEmail(text)}
             placeholder="email"
+            // onBlur={checkemail}
+            // errorStyle={{color: 'red'}}
+            // errorMessage={emailError ? false : 'Silahkan masukan email anda'}
           />
         </View>
       </View>
       <View style={styles.viewNumber}>
-        <View>
+        <View style={styles.viewFont}>
           <Icon name="key" style={styles.iconFont} />
         </View>
-        <View>
+        <View style={styles.textFont}>
           <TextInput
             onChangeText={(text) => setPassword(text)}
             placeholder="password"
@@ -91,15 +125,19 @@ function Login(props) {
           </Text>
         </View>
       </View>
-      <View style={styles.viewHeader}>
-        <TouchableOpacity>
-          <Button type="outline" onPress={onSubmit} title={'LOGIN'} />
-        </TouchableOpacity>
+      <View style={AllStyles.viewButton}>
+        <View style={AllStyles.specButton}>
+          <TouchableOpacity style={AllStyles.forButton}>
+            <Button type="outline" onPress={onSubmit} title={'LOGIN'} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.viewHeader}>
-        <Text onPress={() => props.navigation.navigate('Register')}>
-          Buat Akun
-        </Text>
+      <View style={styles.viewButton}>
+        <View style={styles.specButton}>
+          <Text onPress={() => props.navigation.navigate('Register')}>
+            Buat Akun
+          </Text>
+        </View>
       </View>
     </>
   );

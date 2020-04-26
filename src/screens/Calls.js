@@ -1,8 +1,19 @@
-import React from 'react';
-import {Text, View, Image, StyleSheet, TextInput, Button} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TextInput,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
+import {Avatar} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ImagePicker from 'react-native-image-picker';
 import {setLogout} from '../redux/actions/AuthActions';
 import {connect} from 'react-redux';
+import database from '@react-native-firebase/database';
 
 import {AllStyles} from '../styles/Styles';
 
@@ -20,7 +31,7 @@ const styles = StyleSheet.create({
   picture: {
     width: 150,
     height: 150,
-    borderRadius: 150,
+    borderRadius: 450,
     alignSelf: 'center',
   },
   icon: {
@@ -35,16 +46,70 @@ const styles = StyleSheet.create({
 });
 
 function EditProfile(props) {
+  const [picture, setPicture] = useState('');
+
   const onSubmit = () => {
     props.setLogout();
   };
+
+  const handleChoosePhoto = () => {
+    const options = {
+      quality: 0.7,
+      mediaType: 'photo',
+      noData: true,
+      storageOptions: {
+        path: 'images',
+        cameraRoll: true,
+      },
+    };
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.error) {
+        console.log(response.error);
+      } else if (!response.didCancel) {
+        console.log('picture', picture);
+        setPicture({
+          upload: true,
+          picture: response,
+        });
+      }
+    });
+  };
+
+  const id = props.authData.data.uid;
+  const onEditPhoto = () => {
+    database()
+      .ref(`/User/${id}`)
+      .set({
+        photo: picture.uri,
+      })
+      .then(() => console.log('Data set.'));
+  };
+
   return (
     <View>
       <View style={styles.viewPicture}>
-        <Image
-          source={{uri: props.authData.data.photo}}
-          style={styles.picture}
-        />
+        <TouchableOpacity onPress={handleChoosePhoto}>
+          {picture ? (
+            <Avatar
+              size="xlarge"
+              rounded
+              source={{
+                uri: picture.uri,
+              }}
+              showEditButton
+            />
+          ) : (
+            <Avatar
+              size="xlarge"
+              rounded
+              containerStyle={{alignSelf: 'center'}}
+              source={{
+                uri: props.authData.data.photo,
+              }}
+              showEditButton
+            />
+          )}
+        </TouchableOpacity>
       </View>
       <View style={styles.viewProfile}>
         <View style={{width: '50%', flexDirection: 'row'}}>
@@ -101,7 +166,7 @@ function EditProfile(props) {
 }
 
 const MapStateToProps = (state) => {
-  console.log('data profile', state.auth.data.photo);
+  console.log('data profile', state.auth.data);
   return {
     authData: state.auth,
   };

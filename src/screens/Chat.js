@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,13 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
+  Button,
 } from 'react-native';
 import {getAllData} from '../redux/actions/AuthActions';
 import {connect} from 'react-redux';
+import database from '@react-native-firebase/database';
 
-import HeaderChat from '../component/Header';
-
-const users = [
+const kawan = [
   {
     id: 1,
     pic: require('../files/dian_sastro.jpg'),
@@ -150,33 +150,47 @@ const styles = StyleSheet.create({
 });
 
 function Chat(props) {
-  const data = () => {
-    props.getAllData();
-  };
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState({});
+  useEffect(() => {
+    database()
+      .ref('User/')
+      .on('value', (snapshot) => {
+        const currentUser = props.authData.uid;
+        const data = snapshot.val();
+        const user = Object.values(data);
+        const result = user.filter((u) => u.uid !== currentUser);
+        setUsers(result);
+        setLoading(false);
+        console.log('array', users);
+      });
+  }, []);
   return (
     <ScrollView scrollEventThrottle={8}>
-      {users.map((item, i) => (
-        <TouchableHighlight
-          onPress={() => props.navigation.navigate('RoomChat')}>
-          <View key={users[i].id} style={styles.card}>
-            <View style={styles.viewPic}>
-              <Image style={styles.pic} source={users[i].pic} />
+      {users &&
+        users.map((item, i) => (
+          <TouchableHighlight
+            onPress={() =>
+              props.navigation.navigate('RoomChat', {users: item})
+            }>
+            <View key={users[i].uid} style={styles.card}>
+              <View style={styles.viewPic}>
+                <Image style={styles.pic} source={{uri: users[i].photo}} />
+              </View>
+              <View style={styles.viewText}>
+                <Text style={styles.boldText}>{users[i].name}</Text>
+                <Text style={styles.opacityText}>{users[i].status}</Text>
+              </View>
             </View>
-            <View style={styles.viewText}>
-              <Text style={styles.boldText}>{users[i].name}</Text>
-              <Text style={styles.opacityText}>{users[i].msg}</Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-      ))}
+          </TouchableHighlight>
+        ))}
     </ScrollView>
   );
 }
 
 const MapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-  };
+  return {authData: state.auth.data};
 };
 
 const MapDispatchToProps = {getAllData};

@@ -22,16 +22,16 @@ import {ToastAndroid} from 'react-native';
 
 export const getAllData = () => async (dispatch) => {
   try {
-    const data = await database()
-      .ref('User/')
+    database()
+      .ref('/User')
       .once('value')
       .then((snapshot) => {
         console.log('all user data', snapshot.val());
+        dispatch({
+          type: 'GET_ALL_DATA',
+          payload: snapshot.val(),
+        });
       });
-    dispatch({
-      type: 'GET_ALL_DATA',
-      payload: data,
-    });
   } catch (error) {
     console.log(error);
   }
@@ -63,6 +63,9 @@ export const setLogin = (email, password, callback) => async (dispatch) => {
       if (err.code === 'auth/wrong-password') {
         ToastAndroid.show('Wrong Password', ToastAndroid.SHORT);
       }
+      if (err.code === 'auth/invalid-email') {
+        ToastAndroid.show('Wrong Email', ToastAndroid.SHORT);
+      }
     });
 };
 
@@ -74,6 +77,7 @@ export const register = (email, password, name, phone, callback) => async (
     .then(() => {
       console.log(email, password);
       auth().onAuthStateChanged((userData) => {
+        console.log('register data', userData.uid);
         database()
           .ref('User/' + userData.uid)
           .set({
@@ -82,7 +86,7 @@ export const register = (email, password, name, phone, callback) => async (
             phone: phone,
             email: email,
             photo:
-              'https://cdn2.iconfinder.com/data/icons/men-women-from-all-over-the-world-1/93/man-woman-people-person-avatar-face-user_49-512.png',
+              'https://st2.depositphotos.com/2668729/5359/v/950/depositphotos_53594427-stock-illustration-bird-avatar.jpg',
             uid: userData.uid,
           })
           .catch((error) => console.log(error.message));
@@ -112,14 +116,14 @@ export const setLogout = () => async (dispatch) => {
     });
 };
 
-export const insertNewUser = (data) => async (dispatch) => {
-  try {
-    const results = await database().ref('Users/').push(data);
-    dispatch({
-      type: 'GET_USER_DATA',
-      payload: results,
-    });
-  } catch (errror) {
-    console.log(errror);
-  }
-};
+// export const insertNewUser = (data) => async (dispatch) => {
+//   try {
+//     const results = await database().ref('Users/').push(data);
+//     dispatch({
+//       type: 'GET_USER_DATA',
+//       payload: results,
+//     });
+//   } catch (errror) {
+//     console.log(errror);
+//   }
+// };

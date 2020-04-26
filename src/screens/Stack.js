@@ -35,17 +35,14 @@ function MyTabs() {
         indicatorStyle: {backgroundColor: 'white'},
         style: {backgroundColor: '#075e54'},
       }}>
-      <Tab.Screen name="PROFILE" component={Call} />
       <Tab.Screen name="CHAT" component={Chat} />
+      <Tab.Screen name="PROFILE" component={Call} />
       <Tab.Screen name="Maps" component={Contact} />
     </Tab.Navigator>
   );
 }
 
 function MainScreen(props) {
-  // useEffect(() => {
-  //   props.getOneData();
-  // }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>
