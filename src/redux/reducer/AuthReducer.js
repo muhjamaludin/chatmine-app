@@ -26,6 +26,11 @@ const authReducer = (state = initialState, {type, payload}) => {
         ...state,
         isLogin: false,
       };
+    case 'UPDATE_IMAGE': {
+      const data = {...state.data};
+      data.photo = payload;
+      return {...state, data};
+    }
     default:
       return state;
   }

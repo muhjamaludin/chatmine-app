@@ -1,40 +1,92 @@
 import React from 'react';
 import {View, StyleSheet, Keyboard, Button, TextInput} from 'react-native';
+import {avatar, Avatar} from 'react-native-elements';
 import {GiftedChat} from 'react-native-gifted-chat';
-import {firebase} from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import {connect} from 'react-redux';
 
-export default class RoomChat extends React.Component {
+class RoomChat extends React.Component {
   state = {
+    currentUser: this.props.userData.uid,
+    userSelected: this.props.route.params.users.uid,
     messages: [],
+    messageList: [],
+    showModal: false,
   };
 
   componentDidMount() {
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'Hello developer',
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar:
-              'https://cdn.iconscout.com/icon/free/png-256/account-profile-avatar-man-circle-round-user-30452.png',
-          },
-        },
-      ],
-    });
+    database()
+      .ref('/message')
+      .child(`/${this.state.currentUser}/`)
+      .child(`/${this.state.userSelected}/`)
+      .on('child_added', (value) => {
+        this.setState((prevState) => {
+          const data = value.val();
+          const res = [...prevState.messages, value.val()];
+          const d = res.map((data, index) => {
+            data.text = data.message;
+            data._id = index;
+            data.createdAt = data.time;
+            data.user = {
+              _id: data.from === this.state.currentUser ? 1 : 2,
+              avatar:
+                data.from !== this.state.currentUser
+                  ? this.props.route.params.users.photo
+                  : null,
+            };
+            return data;
+          });
+          console.log(d, 'CEEr');
+          return {
+            messages: d.reverse(),
+          };
+        });
+      });
   }
 
   onSend(messages = []) {
-    this.setState((previousState) => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
+    this.setState(
+      (previousState) => ({}),
+      async () => {
+        if (messages) {
+          try {
+            let messageId = (
+              await database()
+                .ref('/message/')
+                .child(`/${this.state.currentUser}/`)
+                .child(`/${this.state.userSelected}`)
+                .push()
+            ).key;
+            let updates = {};
+            let message = {
+              message: messages[0].text,
+              time: database.ServerValue.TIMESTAMP,
+              from: this.state.currentUser,
+            };
+            updates[
+              `message/${this.state.currentUser}/${this.state.userSelected}/${messageId}`
+            ] = message;
+            updates[
+              `message/${this.state.userSelected}/${this.state.currentUser}/${messageId}`
+            ] = message;
+            database()
+              .ref()
+              .update(updates, () => {
+                this.setState({textMessage: ''});
+              });
+          } catch (error) {
+            console.log('This error from chat', error);
+          }
+        }
+      },
+    );
   }
   render() {
     return (
       <GiftedChat
+        showUserAvatar={false}
+        showAvatarForEveryMessage={false}
+        renderAvatar={false}
         messages={this.state.messages}
         onSend={(messages) => this.onSend(messages)}
         user={{
@@ -62,3 +114,11 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    userData: state.auth.data,
+  };
+};
+
+export default connect(mapStateToProps, {})(RoomChat);

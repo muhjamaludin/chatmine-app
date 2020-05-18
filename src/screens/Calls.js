@@ -14,6 +14,8 @@ import ImagePicker from 'react-native-image-picker';
 import {setLogout} from '../redux/actions/AuthActions';
 import {connect} from 'react-redux';
 import database from '@react-native-firebase/database';
+import storage from '@react-native-firebase/storage';
+import {setNewPicutre} from '../redux/actions/AuthActions';
 
 import {AllStyles} from '../styles/Styles';
 
@@ -59,6 +61,7 @@ function EditProfile(props) {
       noData: true,
       storageOptions: {
         path: 'images',
+        waitUntilSaved: true,
         cameraRoll: true,
       },
     };
@@ -107,6 +110,9 @@ function EditProfile(props) {
                 uri: props.authData.data.photo,
               }}
               showEditButton
+              onPress={() =>
+                props.navigation.navigate('UploadImage', props.authData.data)
+              }
             />
           )}
         </TouchableOpacity>
@@ -166,7 +172,7 @@ function EditProfile(props) {
 }
 
 const MapStateToProps = (state) => {
-  console.log('data profile', state.auth.data);
+  console.log('data profile', state.auth);
   return {
     authData: state.auth,
   };

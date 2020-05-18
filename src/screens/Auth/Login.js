@@ -65,6 +65,10 @@ const styles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
   },
+  textAkun: {
+    textDecorationLine: 'underline',
+    fontSize: 16,
+  },
 });
 
 function Login(props) {
@@ -111,6 +115,7 @@ function Login(props) {
         </View>
         <View style={styles.textFont}>
           <TextInput
+            secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
             placeholder="password"
           />
@@ -128,14 +133,21 @@ function Login(props) {
       <View style={AllStyles.viewButton}>
         <View style={AllStyles.specButton}>
           <TouchableOpacity style={AllStyles.forButton}>
-            <Button type="outline" onPress={onSubmit} title={'LOGIN'} />
+            <Button
+              type="outline"
+              color="#00BFA6"
+              onPress={onSubmit}
+              title={'LOGIN'}
+            />
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.viewButton}>
         <View style={styles.specButton}>
-          <Text onPress={() => props.navigation.navigate('Register')}>
-            Buat Akun
+          <Text
+            style={styles.textAkun}
+            onPress={() => props.navigation.navigate('Register')}>
+            Create Account
           </Text>
         </View>
       </View>

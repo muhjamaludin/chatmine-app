@@ -15,6 +15,7 @@ import Welcome from './Auth/Welcome';
 import Otp from './Auth/Otp';
 import Register from './Auth/Register';
 import ForgotPassword from './Auth/ForgotPhone';
+import UploadImage from './UplodImage';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -97,6 +98,11 @@ function MainScreen(props) {
           name="RoomChat"
           options={{title: 'RoomChat', headerShown: true}}
           component={RoomChat}
+        />
+        <Stack.Screen
+          name="UploadImage"
+          options={{title: 'Upload Image', headerShown: true}}
+          component={UploadImage}
         />
       </Stack.Navigator>
     </NavigationContainer>

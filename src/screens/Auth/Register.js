@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  flexRegister1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 50,
+  },
   text1: {
     width: '20%',
     marginLeft: 20,
@@ -41,7 +46,7 @@ function Register(props) {
       </View>
       <View style={styles.flexRegister}>
         <View style={styles.text1}>
-          <Text>Nama</Text>
+          <Text>Name</Text>
         </View>
         <View>
           <TextInput
@@ -78,25 +83,27 @@ function Register(props) {
         </View>
         <View>
           <TextInput
+            secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
             placeholder="password"
           />
         </View>
       </View>
-      <View style={styles.flexRegister}>
+      <View style={styles.flexRegister1}>
         <View style={styles.text1}>
           <Text>Re-enter Password</Text>
         </View>
         <View>
-          <TextInput placeholder="re-renter password" />
+          <TextInput secureTextEntry={true} placeholder="re-renter password" />
         </View>
       </View>
       <View style={AllStyles.viewButton}>
         <View style={AllStyles.specButton}>
           <Button
             style={AllStyles.forButton}
+            color="#00BFA6"
             onPress={onSubmit}
-            title="Buat Akun"
+            title="Create Account"
           />
         </View>
       </View>

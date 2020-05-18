@@ -19,6 +19,14 @@ import {ToastAndroid} from 'react-native';
 //     console.log(errror);
 //   }
 // };
+export const setNewPicutre = (url) => async (dispatch) => {
+  try {
+    dispatch({
+      type: 'UPDATE_IMAGE',
+      payload: url,
+    });
+  } catch (error) {}
+};
 
 export const getAllData = () => async (dispatch) => {
   try {
@@ -45,8 +53,9 @@ export const setLogin = (email, password, callback) => async (dispatch) => {
       auth().onAuthStateChanged((userData) => {
         console.log('userData', userData);
         const id = userData._user.uid;
+        console.log(id);
         database()
-          .ref(`/User/${id}`)
+          .ref(`User/${id}`)
           .once('value')
           .then((snapshot) => {
             console.log('User data: ', snapshot.val());
