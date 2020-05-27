@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Keyboard, Button, TextInput} from 'react-native';
 import {avatar, Avatar} from 'react-native-elements';
+import SortData from 'sort-objects-array'
 import {GiftedChat} from 'react-native-gifted-chat';
 import database from '@react-native-firebase/database';
 import {connect} from 'react-redux';
@@ -38,7 +39,7 @@ class RoomChat extends React.Component {
           });
           console.log(d, 'CEEr');
           return {
-            messages: d.reverse(),
+            messages: SortData(d, 'createdAt', 'desc'),
           };
         });
       });

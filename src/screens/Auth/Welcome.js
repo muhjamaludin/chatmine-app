@@ -54,7 +54,7 @@ export default function EditProfile({navigation}) {
     <>
       <View>
         <View style={styles.viewCome}>
-          <Text style={styles.textCome}>Selamat Datang di ChatMine</Text>
+          <Text style={styles.textCome}>Selamat Datang di ChatMe</Text>
         </View>
         <View style={styles.viewIlustration}>
           <Image

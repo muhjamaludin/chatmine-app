@@ -1,6 +1,6 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import {Text, View, StyleSheet, Image} from 'react-native';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {connect} from 'react-redux';
 
 import Geolocation from '@react-native-community/geolocation';
@@ -32,6 +32,7 @@ class Contact extends React.Component {
   // }
 
   render() {
+    console.log('this', this.props.userMap.data.photo)
     return (
       <View style={Styles.container}>
         {/* {this.state.coords && ( */}
@@ -49,13 +50,18 @@ class Contact extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-          {/* <MapView.Marker
-              title={this.props.route.params.name}
-              description={`${this.props.route.params.name}'s current position`}
+          <Marker
+              title={'Jaya'}
+              description={`Jaya's current position`}
               coordinate={{
-                latitude: this.props.route.params.location.latitude,
-                longitude: this.props.route.params.location.longitude,
-              }} */}
+                latitude: -6.595038,
+                longitude: 106.816635,
+              }} 
+            >
+              <Image 
+              source={{uri: this.props.userMap.data.photo}} 
+              style={{height: 46, width: 46}} />
+          </Marker>
         </MapView>
         {/* )} */}
       </View>

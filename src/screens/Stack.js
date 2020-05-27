@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -36,16 +36,18 @@ function MyTabs() {
         indicatorStyle: {backgroundColor: 'white'},
         style: {backgroundColor: '#075e54'},
       }}>
+      <Tab.Screen name="Maps" component={Contact}/>
       <Tab.Screen name="CHAT" component={Chat} />
       <Tab.Screen name="PROFILE" component={Call} />
-      <Tab.Screen name="Maps" component={Contact} />
     </Tab.Navigator>
   );
 }
 
 function MainScreen(props) {
+  console.log('props', props.authData)
   return (
     <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor="#010101" />
       <Stack.Navigator>
         {props.authData && props.authData.isLogin ? (
           <>

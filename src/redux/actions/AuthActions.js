@@ -19,7 +19,7 @@ import {ToastAndroid} from 'react-native';
 //     console.log(errror);
 //   }
 // };
-export const setNewPicutre = (url) => async (dispatch) => {
+export const setNewPicture = (url) => async (dispatch) => {
   try {
     dispatch({
       type: 'UPDATE_IMAGE',

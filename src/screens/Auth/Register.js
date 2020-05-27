@@ -1,30 +1,58 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
-import {register} from '../../redux/actions/AuthActions';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { register } from '../../redux/actions/AuthActions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {AllStyles} from '../../styles/Styles';
+import { AllStyles } from '../../styles/Styles';
 
 const styles = StyleSheet.create({
   viewRegister: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: '10%',
+    height: '0%',
   },
   flexRegister: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: "center",
+    bottom: 40
   },
-  flexRegister1: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 50,
+  box1: {
+    width: '25%',
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    backgroundColor: 'white',
+    borderColor: '#f7f7f7'
+  },
+  box2: {
+    width: '70%',
+    borderRightWidth: 1,
+    borderTopWidth: 1,
+    backgroundColor: 'white',
+    borderColor: '#f7f7f7'
+  },
+  box3: {
+    width: '25%',
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderBottomWidth: 1,
+    backgroundColor: 'white',
+    borderColor: '#f7f7f7'
+  },
+  box4: {
+    width: '70%',
+    borderRightWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    backgroundColor: 'white',
+    borderColor: '#f7f7f7'
   },
   text1: {
-    width: '20%',
     marginLeft: 20,
-  },
+    fontSize: 15,
+  }
 });
 
 function Register(props) {
@@ -41,70 +69,79 @@ function Register(props) {
 
   return (
     <>
-      <View style={styles.viewRegister}>
-        <Text style={{fontSize: 36}}> Register </Text>
-      </View>
-      <View style={styles.flexRegister}>
-        <View style={styles.text1}>
-          <Text>Name</Text>
+      <View style={{ flex: 1, justifyContent: 'space-around' }}>
+        <View style={styles.viewRegister}>
+          <Text style={{ fontSize: 36 }}> Register </Text>
         </View>
-        <View>
-          <TextInput
-            onChangeText={(text) => setName(text)}
-            placeholder="nama"
-          />
+        <View style={{height: '30%',  }}>
+          <View style={styles.flexRegister}>
+            <View style={styles.box1}>
+              <Text style={styles.text1}>Name</Text>
+            </View>
+            <View style={styles.box2}>
+              <TextInput
+                onChangeText={(text) => setName(text)}
+                placeholder="nama"
+                style={styles.text1}
+              />
+            </View>
+          </View>
+          <View style={styles.flexRegister}>
+            <View style={styles.box1}>
+              <Text style={styles.text1} >Email</Text>
+            </View>
+            <View style={styles.box2}>
+              <TextInput
+                onChangeText={(text) => setEmail(text)}
+                placeholder="email"
+                style={styles.text1}
+              />
+            </View>
+          </View>
+          <View style={styles.flexRegister}>
+            <View style={styles.box1}>
+              <Text style={styles.text1}>Phone</Text>
+            </View>
+            <View style={styles.box2}>
+              <TextInput
+                onChangeText={(text) => setPhone(text)}
+                placeholder="phone"
+                style={styles.text1}
+              />
+            </View>
+          </View>
+          <View style={styles.flexRegister}>
+            <View style={styles.box1}>
+              <Text style={styles.text1} >Password</Text>
+            </View>
+            <View style={styles.box2}>
+              <TextInput
+                secureTextEntry={true}
+                onChangeText={(text) => setPassword(text)}
+                placeholder="password"
+                style={styles.text1}
+              />
+            </View>
+          </View>
+          <View style={styles.flexRegister}>
+            <View style={styles.box3}>
+              <Text style={styles.text1} >Re-enter</Text>
+              <Text style={styles.text1}>Password</Text>
+            </View>
+            <View style={styles.box4}>
+              <TextInput style={styles.text1} secureTextEntry={true} placeholder="re-renter password" />
+            </View>
+          </View>
         </View>
-      </View>
-      <View style={styles.flexRegister}>
-        <View style={styles.text1}>
-          <Text>Email</Text>
-        </View>
-        <View>
-          <TextInput
-            onChangeText={(text) => setEmail(text)}
-            placeholder="email"
-          />
-        </View>
-      </View>
-      <View style={styles.flexRegister}>
-        <View style={styles.text1}>
-          <Text>Phone</Text>
-        </View>
-        <View>
-          <TextInput
-            onChangeText={(text) => setPhone(text)}
-            placeholder="phone"
-          />
-        </View>
-      </View>
-      <View style={styles.flexRegister}>
-        <View style={styles.text1}>
-          <Text>Password</Text>
-        </View>
-        <View>
-          <TextInput
-            secureTextEntry={true}
-            onChangeText={(text) => setPassword(text)}
-            placeholder="password"
-          />
-        </View>
-      </View>
-      <View style={styles.flexRegister1}>
-        <View style={styles.text1}>
-          <Text>Re-enter Password</Text>
-        </View>
-        <View>
-          <TextInput secureTextEntry={true} placeholder="re-renter password" />
-        </View>
-      </View>
-      <View style={AllStyles.viewButton}>
-        <View style={AllStyles.specButton}>
-          <Button
-            style={AllStyles.forButton}
-            color="#00BFA6"
-            onPress={onSubmit}
-            title="Create Account"
-          />
+        <View style={AllStyles.viewButton}>
+          <View style={AllStyles.specButton}>
+            <Button
+              style={AllStyles.forButton}
+              color="#00BFA6"
+              onPress={onSubmit}
+              title="Create Account"
+            />
+          </View>
         </View>
       </View>
     </>
@@ -117,4 +154,4 @@ const MapStateToProps = (state) => {
   };
 };
 
-export default connect(null, {register})(Register);
+export default connect(null, { register })(Register);

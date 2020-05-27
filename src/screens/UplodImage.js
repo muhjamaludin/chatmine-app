@@ -5,7 +5,7 @@ import ImagePicker from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import database from '@react-native-firebase/database';
 import {connect} from 'react-redux';
-import {setNewPicutre} from '../redux/actions/AuthActions';
+import {setNewPicture} from '../redux/actions/AuthActions';
 
 class UploadImage extends Component {
   state = {
@@ -103,7 +103,8 @@ class UploadImage extends Component {
         .child('photo')
         .set(imageUrl)
         .then(() => {
-          this.props.setNewPicutre(imageUrl);
+          console.log('badidum', imageUrl)
+          this.props.setNewPicture(imageUrl);
           this.props.navigation.goBack();
         })
         .catch((err) => {
@@ -182,4 +183,4 @@ const localStyle = StyleSheet.create({
   iconDesc: {fontSize: 11, alignItems: 'center'},
 });
 
-export default connect(null, {setNewPicutre})(UploadImage);
+export default connect(null, {setNewPicture})(UploadImage);
