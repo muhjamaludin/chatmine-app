@@ -9,6 +9,7 @@ Geolocation.setRNConfiguration((info) => console.log(info));
 const Styles = StyleSheet.create({
   container: {
     height: '100%',
+    flex: 1
   },
   map: {
     ...StyleSheet.absoluteFillObject,
@@ -60,7 +61,7 @@ class Contact extends React.Component {
             >
               <Image 
               source={{uri: this.props.userMap.data.photo}} 
-              style={{height: 46, width: 46}} />
+              style={{height: 46, width: 46, borderRadius: 40}} />
           </Marker>
         </MapView>
         {/* )} */}

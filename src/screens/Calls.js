@@ -100,6 +100,17 @@ function EditProfile(props) {
       .then(() => console.log('Data set.'));
   };
 
+  const edit = () => {
+    const data = {
+      name: props.authData.data.name,
+      email: props.authData.data.email,
+      phone: props.authData.data.phone,
+      uid: props.authData.data.uid
+    }
+    props.navigation.navigate('UpdateProfile', {name: data.name, email: data.email, phone: data.phone, uid: data.uid})
+    console.log('dataxxx', data.uid)
+  }
+
   return (
     <View style={{ justifyContent: 'space-around' }}>
       <Modal 
@@ -144,7 +155,7 @@ function EditProfile(props) {
           <View style={styles.viewText}>
             <Text style={{ padding: 8, fontSize: 18 }}> {props.authData.data.name}</Text>
           </View>
-          <TouchableOpacity style={styles.viewPencil} onPress={() => {setModalVisible(true)}}>
+          <TouchableOpacity style={styles.viewPencil} onPress={edit}>
             <Icon style={styles.icon} name="pencil" />
           </TouchableOpacity>
         </View>
@@ -155,7 +166,7 @@ function EditProfile(props) {
           <View style={styles.viewText}>
             <Text style={{ padding: 8, fontSize: 18 }}> {props.authData.data.email} </Text>
           </View>
-          <TouchableOpacity style={styles.viewPencil}>
+          <TouchableOpacity style={styles.viewPencil} onPress={edit}>
             <Icon style={styles.icon} name="pencil" />
           </TouchableOpacity>
         </View>
@@ -166,7 +177,7 @@ function EditProfile(props) {
           <View style={styles.viewText}>
             <Text style={{ padding: 8, fontSize: 18 }}> {props.authData.data.phone} </Text>
           </View>
-          <TouchableOpacity style={styles.viewPencil}>
+          <TouchableOpacity style={styles.viewPencil} onPress={edit}>
             <Icon style={styles.icon} name="pencil" />
           </TouchableOpacity>
         </View>

@@ -31,6 +31,11 @@ const authReducer = (state = initialState, {type, payload}) => {
       data.photo = payload;
       return {...state, data};
     }
+    case 'EDIT_PROFILE': {
+      return {
+        ...state,
+      }
+    }
     default:
       return state;
   }

@@ -16,6 +16,7 @@ import Otp from './Auth/Otp';
 import Register from './Auth/Register';
 import ForgotPassword from './Auth/ForgotPhone';
 import UploadImage from './UplodImage';
+import UpdateProfile from './UpdateProfile'
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
 function MyTabs() {
   return (
     <Tab.Navigator
-      style={{}}
       tabBarOptions={{
         activeTintColor: 'white',
         labelStyle: {fontWeight: 'bold'},
@@ -105,6 +105,11 @@ function MainScreen(props) {
           name="UploadImage"
           options={{title: 'Upload Image', headerShown: true}}
           component={UploadImage}
+        />
+        <Stack.Screen
+          name="UpdateProfile"
+          options={{title: 'Edit Profile', headerShown: true}}
+          component={UpdateProfile}
         />
       </Stack.Navigator>
     </NavigationContainer>

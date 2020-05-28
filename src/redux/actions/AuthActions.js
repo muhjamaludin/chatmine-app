@@ -2,23 +2,24 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import {ToastAndroid} from 'react-native';
 
-// export const getOneData = (id) => async (dispatch) => {
-//   try {
-//     database()
-//       .ref(`/User/${id}`)
-//       .once('value')
-//       .then((snapshot) => {
-//         console.log('data user: ', snapshot.val());
-//         const data = snapshot.val();
-//         dispatch({
-//           type: 'GET_USER_DATA',
-//           payload: data,
-//         });
-//       });
-//   } catch (errror) {
-//     console.log(errror);
-//   }
-// };
+export const getOneData = (uid) => async (dispatch) => {
+  try {
+    database()
+      .ref(`/User/${uid}`)
+      .once('value')
+      .then((snapshot) => {
+        console.log('data user: ', snapshot.val());
+        const data = snapshot.val();
+        dispatch({
+          type: 'GET_USER_DATA',
+          payload: data,
+        });
+      });
+  } catch (errror) {
+    console.log(errror);
+  }
+};
+
 export const setNewPicture = (url) => async (dispatch) => {
   try {
     dispatch({
@@ -27,6 +28,25 @@ export const setNewPicture = (url) => async (dispatch) => {
     });
   } catch (error) {}
 };
+
+export const editProfile = (uid, name, email, phone) => async (dispatch) => {
+  try {
+    database()
+    .ref(`/User/${uid}`)
+    .update({
+      name: `${name}`,
+      email: `${email}`,
+      phone: `${phone}`
+    })
+    .then(() => {
+      console.log('Data updated.')
+    });
+  } catch (err) {
+    console.log(err)
+  }
+  
+}
+
 
 export const getAllData = () => async (dispatch) => {
   try {
@@ -58,6 +78,7 @@ export const setLogin = (email, password, callback) => async (dispatch) => {
           .ref(`User/${id}`)
           .once('value')
           .then((snapshot) => {
+            console.log('dafuq')
             console.log('User data: ', snapshot.val());
             dispatch({
               type: 'SET_LOGIN',
