@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
 function EditProfile(props) {
   const [picture, setPicture] = useState('');
   const [modalVisible, setModalVisible] = useState(false)
-
+  
   const onSubmit = () => {
     props.setLogout();
   };
-
+  
   const handleChoosePhoto = () => {
     const options = {
       quality: 0.7,
@@ -89,17 +89,17 @@ function EditProfile(props) {
       }
     });
   };
-
+  
   const id = props.authData.data.uid;
   const onEditPhoto = () => {
     database()
-      .ref(`/User/${id}`)
-      .set({
-        photo: picture.uri,
-      })
-      .then(() => console.log('Data set.'));
+    .ref(`/User/${id}`)
+    .set({
+      photo: picture.uri,
+    })
+    .then(() => console.log('Data set.'));
   };
-
+  
   const edit = () => {
     const data = {
       name: props.authData.data.name,
@@ -110,13 +110,13 @@ function EditProfile(props) {
     props.navigation.navigate('UpdateProfile', {name: data.name, email: data.email, phone: data.phone, uid: data.uid})
     console.log('dataxxx', data.uid)
   }
-
+  console.log('aaaaax')
   return (
     <View style={{ justifyContent: 'space-around' }}>
       <Modal 
         animationType="slide"
         transparent={false}
-        visible={true}
+        visible={false}
         onRequestClose={() => {Alert.alert('Modal will closed')}}
       
       />

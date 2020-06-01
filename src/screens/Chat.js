@@ -165,10 +165,10 @@ function Chat(props) {
         setLoading(false);
         console.log('array', users);
       });
-  }, []);
+  }, [loading]);
   return (
     <ScrollView scrollEventThrottle={8}>
-      {users &&
+      {loading ? null :
         users.map((item, i) => (
           <TouchableHighlight
             onPress={() =>
